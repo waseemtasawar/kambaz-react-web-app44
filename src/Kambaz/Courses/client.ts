@@ -1,5 +1,14 @@
 import axios from "axios";
 
+interface Module {
+  _id: string;
+  name: string;
+  course: string;
+  description?: string;
+  lessons?: any[];
+  editing?: boolean;
+}
+
 const axiosWithCredentials = axios.create({
   withCredentials: true,
   baseURL: import.meta.env.VITE_REMOTE_SERVER,
@@ -51,7 +60,7 @@ export const updateCourse = async (course: any): Promise<any> => {
 
 export const findModulesForCourse = async (
   courseId: string
-): Promise<any[]> => {
+): Promise<Module[]> => {
   try {
     const response = await axiosWithCredentials.get(
       `${COURSES_API}/${courseId}/modules`
@@ -62,9 +71,19 @@ export const findModulesForCourse = async (
     throw new Error("Failed to fetch modules");
   }
 };
-export function createModuleForCourse(
-  cid: string,
+
+export const createModuleForCourse = async (
+  courseId: string,
   newModule: { name: string; course: string }
-) {
-  throw new Error("Function not implemented.");
-}
+): Promise<Module> => {
+  try {
+    const response = await axiosWithCredentials.post(
+      `${COURSES_API}/${courseId}/modules`,
+      newModule
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to create module:", error);
+    throw new Error("Failed to create module");
+  }
+};
