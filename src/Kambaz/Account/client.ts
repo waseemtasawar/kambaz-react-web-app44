@@ -8,7 +8,6 @@ const axiosWithCredentials = axios.create({
     "Content-Type": "application/json",
   },
 });
-
 const API_BASE = "/api/users";
 
 export const findAllUsers = async () => {
@@ -22,7 +21,7 @@ export const findCoursesForUser = async (userId: string) => {
   return response.data;
 };
 export const createUser = async (user: any) => {
-  const response = await axiosWithCredentials.post(API_BASE, user); // Fixed
+  const response = await axiosWithCredentials.post(API_BASE, user); // Fixed error
   return response.data;
 };
 
