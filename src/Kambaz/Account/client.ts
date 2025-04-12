@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an Axios instance with proper defaults
 const axiosWithCredentials = axios.create({
   withCredentials: true,
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_REMOTE_SERVER,
   headers: {
     "Content-Type": "application/json",
   },
