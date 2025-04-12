@@ -8,13 +8,14 @@ import WorkingWithArrayown from "./WorkingWithArrayown";
 import HttpClient from "./HttpClient";
 import WorkingWithObjectsAsynchronously from "./WorkingWithObjectsAsynchronously";
 import WorkingWithArraysAsynchronously from "./WorkingWithArraysAsynchronously";
-const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
+const REMOTE_SERVER =
+  import.meta.env.VITE_REMOTE_SERVER || "http://localhost:4000";
 export default function Lab5() {
   return (
     <div id="wd-lab5">
       <h2>Lab 5</h2>
       <div className="list-group">
-        <a href={`${REMOTE_SERVER}/lab5/welcome` }className="list-group-item">
+        <a href={`${REMOTE_SERVER}/lab5/welcome`} className="list-group-item">
           welcome
         </a>
       </div>
@@ -24,11 +25,11 @@ export default function Lab5() {
       <QueryParameters />
       <WorkingWithObjects />
       <WorkingWithObjectsmy />
-      <WorkingWithArrays/>
-      <WorkingWithArrayown/>
-      <HttpClient/>
-      <WorkingWithObjectsAsynchronously/>
-      <WorkingWithArraysAsynchronously/>
+      <WorkingWithArrays />
+      <WorkingWithArrayown />
+      <HttpClient />
+      <WorkingWithObjectsAsynchronously />
+      <WorkingWithArraysAsynchronously />
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
-import db from "../Database";
 import * as client from "./client";
 export default function Signin() {
   const [credentials, setCredentials] = useState<any>({});
@@ -10,10 +9,14 @@ export default function Signin() {
   const navigate = useNavigate();
 
   const signIn = async () => {
-    const user = await client.signin(credentials);
-    if (!user) return;
-    dispatch(setCurrentUser(user));
-    navigate("/Kambaz/Dashboard");
+    try {
+      const user = await client.signin(credentials);
+      dispatch(setCurrentUser(user));
+      navigate("/Kambaz/Dashboard");
+    } catch (error: any) {
+      alert(error.message || "Login failed");
+      console.error("Login error:", error);
+    }
   };
 
   return (

@@ -1,16 +1,10 @@
-import { useParams } from "react-router-dom";
-import db from '../../../Database';
 import { FaUserCircle } from "react-icons/fa";
-
-export default function PeopleTable() {
-  const { cid } = useParams();
-  const { users, enrollments } = db;
-  const enrolledUsers = users.filter((user: any) =>
-    enrollments.some((enrollment: any) => enrollment.user === user._id && enrollment.course === cid)
-  );
-
+import PeopleDetails from "../Details";
+import { Link } from "react-router-dom";
+export default function PeopleTable({ users = [] }: { users?: any[] }) {
   return (
     <div id="wd-people-table">
+      <PeopleDetails />
       <table className="table table-striped">
         <thead>
           <tr>
@@ -23,11 +17,16 @@ export default function PeopleTable() {
           </tr>
         </thead>
         <tbody>
-          {enrolledUsers.map((user: any) => (
+          {users.map((user: any) => (
             <tr key={user._id}>
               <td className="wd-full-name text-nowrap">
-                <FaUserCircle className="me-2 fs-1 text-secondary" />
-                {user.firstName} {user.lastName}
+                <Link
+                  to={`/Kambaz/Account/Users/${user._id}`}
+                  className="text-decoration-none"
+                >
+                  <FaUserCircle className="me-2 fs-1 text-secondary" />
+                  {user.firstName} {user.lastName}
+                </Link>
               </td>
               <td>{user.loginId}</td>
               <td>{user.section}</td>
