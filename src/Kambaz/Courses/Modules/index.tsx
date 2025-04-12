@@ -112,7 +112,6 @@ export default function Modules() {
         setModuleName={setModuleName}
         moduleName={moduleName}
         addModule={createModuleForCourse}
-        disabled={isLoading}
       />
 
       <ul className="list-group rounded-0">
