@@ -18,6 +18,7 @@ interface Module {
   name: string;
   course: string;
   editing?: boolean;
+  lessons?: any[];
 }
 
 export default function Modules() {
@@ -48,7 +49,14 @@ export default function Modules() {
     try {
       setIsLoading(true);
       const updatedModule = await modulesClient.updateModule(module);
-      dispatch(updateModule(updatedModule));
+      dispatch(
+        updateModule({
+          _id: updatedModule._id,
+          name: updatedModule.name,
+          course: updatedModule.course,
+          editing: updatedModule.editing,
+        })
+      );
     } catch (err) {
       setError("Failed to save module");
       console.error(err);
@@ -77,7 +85,13 @@ export default function Modules() {
       setIsLoading(true);
       const newModule = { name: moduleName.trim(), course: cid };
       const module = await coursesClient.createModuleForCourse(cid, newModule);
-      dispatch(addModule(module));
+      // Only pass the required properties to addModule
+      dispatch(
+        addModule({
+          name: module.name,
+          course: module.course,
+        })
+      );
       setModuleName("");
     } catch (err) {
       setError("Failed to create module");
@@ -96,11 +110,25 @@ export default function Modules() {
   };
 
   const handleUpdateModule = (module: Module) => {
-    dispatch(updateModule(module));
+    dispatch(
+      updateModule({
+        _id: module._id,
+        name: module.name,
+        course: module.course,
+        editing: module.editing,
+      })
+    );
   };
 
   const handleCancelEdit = (module: Module) => {
-    dispatch(updateModule({ ...module, editing: false }));
+    dispatch(
+      updateModule({
+        _id: module._id,
+        name: module.name,
+        course: module.course,
+        editing: false,
+      })
+    );
   };
 
   if (isLoading) return <div>Loading...</div>;
