@@ -62,3 +62,9 @@ export const findModulesForCourse = async (
     throw new Error("Failed to fetch modules");
   }
 };
+export function createModuleForCourse(
+  cid: string,
+  newModule: { name: string; course: string }
+) {
+  throw new Error("Function not implemented.");
+}

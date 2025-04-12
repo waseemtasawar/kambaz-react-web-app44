@@ -8,6 +8,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { addCourse, updateCourse, deleteCourse } from "./reducer";
+import { enrollStudent, unenrollStudent } from "./store/reducer";
 import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 import Dashboard from "./Dashboard";
@@ -26,6 +27,11 @@ interface Course {
   // Add other course properties as needed
 }
 
+interface Enrollment {
+  user: string;
+  course: string;
+}
+
 export default function Kambaz() {
   const [localCourses, setLocalCourses] = useState<Course[]>([]);
   const [course, setCourse] = useState<Course | null>(null);
@@ -35,10 +41,10 @@ export default function Kambaz() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const reduxCourses = useSelector(
     (state: any) => state.coursesReducer?.courses || []
-  );
+  ) as Course[];
   const enrollments = useSelector(
     (state: any) => state.enrollmentsReducer?.enrollments || []
-  );
+  ) as Enrollment[];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -57,9 +63,9 @@ export default function Kambaz() {
             userClient.findCoursesForUser(currentUser._id),
           ]);
 
-          const coursesWithStatus = allCourses.map((c) => ({
+          const coursesWithStatus = allCourses.map((c: Course) => ({
             ...c,
-            enrolled: enrolledCourses.some((ec) => ec._id === c._id),
+            enrolled: enrolledCourses.some((ec: Course) => ec._id === c._id),
           }));
 
           setLocalCourses(coursesWithStatus);
@@ -153,8 +159,7 @@ export default function Kambaz() {
   useEffect(() => {
     if (currentUser?.role === "STUDENT" && cid) {
       const isEnrolled = enrollments.some(
-        (e: { user: string; course: string }) =>
-          e.user === currentUser._id && e.course === cid
+        (e: Enrollment) => e.user === currentUser._id && e.course === cid
       );
       if (!isEnrolled) {
         navigate("/Kambaz/Dashboard", { replace: true });
@@ -176,7 +181,7 @@ export default function Kambaz() {
                 <ProtectedRoute>
                   <Dashboard
                     courses={localCourses}
-                    course={course}
+                    course={course as Course} // Type assertion or make Dashboard prop optional
                     setCourse={setCourse}
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourseLocal}
